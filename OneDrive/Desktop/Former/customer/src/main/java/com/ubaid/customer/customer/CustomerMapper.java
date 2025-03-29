@@ -8,13 +8,23 @@ public class CustomerMapper {
         if(request == null){
             return null;
         }
-        return Customer.builder()
-                .id(request.id())
-                .firstName(request.firstName())
-                .lastName(request.lastName())
-                .email(request.email())
-                .address(request.address())
-                .build();
+        Customer customer=new Customer();
+        customer.setId(request.id());
+        customer.setAddress(request.address());
+        customer.setEmail(request.email());
+        customer.setEquipment(request.equipment());
+        customer.setFirstName(request.firstName());
+        customer.setLastName(request.lastName());
+
+
+        return customer;
+//        return Customer.builder()
+//                .id(request.id())
+//                .firstName(request.firstName())
+//                .lastName(request.lastName())
+//                .email(request.email())
+//                .address(request.address())
+//                .build();
     }
 
     public CustomerResponse fromCustomer(Customer customer){
