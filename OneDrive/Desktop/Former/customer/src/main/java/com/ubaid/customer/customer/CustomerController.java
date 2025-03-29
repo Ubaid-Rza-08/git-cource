@@ -4,7 +4,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -12,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerController {
 
+    private final CustomerRepository repository;
     private final CustomerService service;
     @PostMapping
     public ResponseEntity<String> createCustomer(
@@ -45,5 +48,19 @@ public class CustomerController {
     ) {
         this.service.deleteCustomer(customerId);
         return ResponseEntity.accepted().build();
+    }
+    @PostMapping("/profileImg/{id}")
+    public ResponseEntity<String> addProfileImg(@PathVariable String id, @RequestPart("profile")MultipartFile profile) throws IOException {
+        Customer customer=repository.findById(id).get();
+        customer.setProfile(profile.getBytes());
+        repository.save(customer);
+        return ResponseEntity.ok("Profile image updated successfully !");
+    }
+    @PostMapping("/productImg/{id}")
+    public ResponseEntity<String> addProductImg(@PathVariable String id, @RequestPart("product")MultipartFile product) throws IOException {
+        Customer customer=repository.findById(id).get();
+        customer.setProducts(product.getBytes());
+        repository.save(customer);
+        return ResponseEntity.ok("Product image updated successfully !");
     }
 }
